@@ -55,8 +55,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="图片">
-          <el-upload class="avatar-uploader" action="http://192.168.0.107:8080/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" name="file">
+          <el-upload class="avatar-uploader" action="http://192.168.0.115:8080/upload" :show-file-list="false"
+            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" name="file"v-loading="imgLoading">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -74,6 +74,7 @@
 <script>
 
   import dictApi from '@/api/dict'
+  import { Loading } from 'element-ui'
 
   export default {
     data() {
@@ -96,6 +97,7 @@
         collegeList: [],
         subjectList: [],
         dialogTitle: '新增题库',
+        imgLoading: false,
         loading: true // 是否显示加载框
       }
     },
@@ -147,16 +149,20 @@
         this.imageUrl = res.data.fileUrl
         this.bank.bankImg = this.imageUrl
         this.$message.success(res.msg);
+        this.imgLoading = false
       },
       beforeAvatarUpload(file) {
         const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
         const isLt2M = file.size / 1024 / 1024 < 5;
         if (!isJPG) {
           this.$message.error('上传图片只支持 JPG、JPEG、PNG 格式!');
+          return
         }
         if (!isLt2M) {
           this.$message.error('上传图片大小不能超过 5MB!');
+          return
         }
+        this.imgLoading = true
         return isJPG && isLt2M;
       }
     },
