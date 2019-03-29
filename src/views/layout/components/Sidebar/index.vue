@@ -9,6 +9,8 @@
       :collapse-transition="false"
       mode="vertical"
     >
+    
+    <img src="/src/img/井冈山大学LOGO.png" class="logo"/>
       <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"/>
     </el-menu>
   </el-scrollbar>
@@ -37,3 +39,14 @@ export default {
   }
 }
 </script>
+
+<style>
+  .logo {
+    width: 45%;
+    border-radius: 50%;
+    margin: auto;
+    display: table;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+</style>
