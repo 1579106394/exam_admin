@@ -26,13 +26,13 @@ const user = {
 
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
-
-      const username = userInfo.username.trim()
+    Login({ commit }, teacher) {
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        login(teacher).then(response => {
           const data = response.data
           setToken(data.token)
+          console.log(data)
+          console.log(getToken())
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {

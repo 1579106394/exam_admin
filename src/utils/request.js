@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message, MessageBox,Loading } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
