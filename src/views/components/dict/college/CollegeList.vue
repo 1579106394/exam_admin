@@ -71,7 +71,7 @@
           totalCount: null,
           totalPage: null,
           sortName: '',
-          sortOrder: 'asc',
+          sortOrder: 'asc', //
           params: {
             dictType: 'college'
           },

@@ -75,8 +75,14 @@ export const constantRouterMap = [
       {
         path: 'bank',
         name: 'bank',
-        component: () => import('@/views/components/bank/BankList'),
+        component: () => import('@/views/components/bank/bank/BankList'),
         meta: { title: '题库管理', icon: 'table' }
+      },
+      {
+        path: 'type',
+        name: 'type',
+        component: () => import('@/views/components/bank/type/TypeList'),
+        meta: { title: '题型管理', icon: 'table' }
       }
     ]
   },
