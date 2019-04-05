@@ -36,9 +36,9 @@
 
       <el-table-column fixed="right" label="操作" width="248">
         <template class="teacher-do" slot-scope="scope">
-          <el-button size="small" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
-          <el-button size="small" type="primary" @click="toUpdate(scope.row.teacherId)">查看详情</el-button>
-          <el-button size="small" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
+          <el-button size="mini" type="success" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="toUpdate(scope.row.teacherId)">查看详情</el-button>
+          <el-button size="mini" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,7 +55,7 @@
       ></el-pagination>
     </div>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" v-loading="loading">
-      <el-form :rules="rules" ref="teacher" :inline="true" :model="teacher" label-width="80px" size="small">
+      <el-form :rules="rules" ref="teacher" :inline="true" :model="teacher" label-width="80px" size="mini">
         
         
         <el-form-item label="工号" prop="teacherNumber">

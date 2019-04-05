@@ -36,7 +36,7 @@
 
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form ref="form" :model="college" label-width="80px" size="small">
+      <el-form ref="form" :model="college" label-width="80px" size="mini">
         <el-form-item label="学院名称">
           <el-input v-model="college.dictName" clearable></el-input>
         </el-form-item>

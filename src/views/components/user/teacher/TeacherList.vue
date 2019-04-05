@@ -36,10 +36,10 @@
 
       <el-table-column fixed="right" label="操作" width="248">
         <template class="teacher-do" slot-scope="scope">
-          <el-button size="small" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
-          <el-button size="small" type="primary" @click="resumeVisible='true'">查看详情</el-button>
+          <el-button size="mini" type="success" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="resumeVisible='true'">查看详情</el-button>
           <!-- toResume(scope.row.teacherId) -->
-          <el-button size="small" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
+          <el-button size="mini" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,7 +62,7 @@
         :inline="true"
         :model="teacher"
         label-width="80px"
-        size="small"
+        size="mini"
       >
         <el-form-item label="工号" prop="teacherNumber">
           <el-input :disabled="isdisabledFn" v-model="teacher.teacherNumber" clearable></el-input>
@@ -164,7 +164,7 @@
         :inline="true"
         :model="teacher"
         label-width="80px"
-        size="small"
+        size="mini"
       >
         <el-form-item label="照片:" class="img" v-loading="imgLoading">
           <el-card :body-style="{ padding: '1px' }">
