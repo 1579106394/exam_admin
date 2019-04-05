@@ -86,6 +86,28 @@ export const constantRouterMap = [
       }
     ]
   },
+  
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/teacher',
+    name: 'bank',
+    meta: { title: '用户管理', icon: 'example' },
+    children: [
+      {
+        path: 'teacher',
+        name: 'teacher',
+        component: () => import('@/views/components/user/teacher/TeacherList'),
+        meta: { title: '教师管理', icon: 'table' }
+      },
+      {
+        path: 'student',
+        name: 'student',
+        component: () => import('@/views/components/user/student/StudentList'),
+        meta: { title: '学生管理', icon: 'table' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

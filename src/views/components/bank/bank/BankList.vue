@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-header">
-      <el-form :inline="true" :model="page" class="demo-form-inline" size="mini">
+      <el-form  :inline="true" :model="page" class="demo-form-inline" size="mini">
         <el-form-item label="题库名">
           <el-input v-model="page.params.bankName" placeholder="题库名" clearable></el-input>
         </el-form-item>
@@ -90,7 +90,7 @@
         <el-form-item label="上传封面:">
           <el-upload
             class="avatar-uploader"
-            action="http://192.168.0.104:8080/upload"
+            action="http://192.168.0.120:8080/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
