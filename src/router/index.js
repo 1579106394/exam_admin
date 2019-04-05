@@ -86,12 +86,12 @@ export const constantRouterMap = [
       }
     ]
   },
-  
+
   {
     path: '/user',
     component: Layout,
     redirect: '/user/teacher',
-    name: 'bank',
+    name: 'user',
     meta: { title: '用户管理', icon: 'example' },
     children: [
       {
@@ -105,6 +105,34 @@ export const constantRouterMap = [
         name: 'student',
         component: () => import('@/views/components/user/student/StudentList'),
         meta: { title: '学生管理', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/auth',
+    component: Layout,
+    redirect: '/auth/role',
+    name: 'auth',
+    meta: { title: '权限管理', icon: 'example' },
+    children: [
+      {
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/components/auth/role/RoleList'),
+        meta: { title: '角色管理', icon: 'table' }
+      },
+      {
+        path: 'teacherRole',
+        name: 'teacherRole',
+        component: () => import('@/views/components/auth/role/TeacherRole'),
+        meta: { title: '教师角色', icon: 'table' }
+      },
+      {
+        path: 'auth',
+        name: 'auth',
+        component: () => import('@/views/components/user/student/StudentList'),
+        meta: { title: '权限管理', icon: 'table' }
       }
     ]
   },

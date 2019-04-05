@@ -25,7 +25,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="toUpdate(scope.row.dictId)">编辑</el-button>
+          <el-button size="mini" type="success" @click="toUpdate(scope.row.dictId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="toDelete(scope.row.dictId)">删除</el-button>
         </template>
       </el-table-column>
@@ -39,7 +39,7 @@
     </div>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form ref="form" :model="college" label-width="80px" size="small">
+      <el-form ref="form" :model="college" label-width="80px" size="mini">
         <el-form-item label="专业名称">
           <el-input v-model="college.dictName" clearable></el-input>
         </el-form-item>
