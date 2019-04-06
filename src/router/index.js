@@ -70,7 +70,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/bank/bank',
     name: 'bank',
-    meta: { title: '系统管理', icon: 'example' },
+    meta: { title: '题库管理', icon: 'example' },
     children: [
       {
         path: 'bank',

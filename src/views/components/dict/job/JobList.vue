@@ -20,8 +20,19 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="toUpdate(scope.row.dictId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="toDelete(scope.row.dictId)">删除</el-button>
+          <el-dropdown>
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-button size="mini" type="success" @click="toUpdate(scope.row.dictId)">编辑</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="danger" @click="toDelete(scope.row.dictId)">删除</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>

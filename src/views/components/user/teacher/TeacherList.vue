@@ -29,11 +29,25 @@
 
       <el-table-column fixed="right" label="操作" width="248">
         <template class="teacher-do" slot-scope="scope">
-          <el-button size="mini" type="success" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="resumeVisible='true'">查看详情</el-button>
-          <el-button size="mini" type="primary" @click="checkRole(scope.row.teacherId)">角色</el-button>
-          <!-- toResume(scope.row.teacherId) -->
-          <el-button size="mini" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
+          <el-dropdown>
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-button size="mini" type="success" @click="toUpdate(scope.row.teacherId)">编辑</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="primary" @click="resumeVisible='true'">查看详情</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="primary" @click="checkRole(scope.row.teacherId)">修改角色</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="danger" @click="toDelete(scope.row.teacherId)">删除</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
