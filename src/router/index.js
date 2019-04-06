@@ -123,12 +123,6 @@ export const constantRouterMap = [
         meta: { title: '角色管理', icon: 'table' }
       },
       {
-        path: 'teacherRole',
-        name: 'teacherRole',
-        component: () => import('@/views/components/auth/role/TeacherRole'),
-        meta: { title: '教师角色', icon: 'table' }
-      },
-      {
         path: 'auth',
         name: 'auth',
         component: () => import('@/views/components/user/student/StudentList'),

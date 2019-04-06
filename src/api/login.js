@@ -10,9 +10,8 @@ export function login(teacher) {
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: `/teacher/info/${token}`,
+    method: 'get'
   })
 }
 
