@@ -49,7 +49,7 @@ const user = {
           if (data.roleList && data.roleList.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roleList)
           } else {
-            reject('getInfo: roles must be a non-null array !')
+            reject('您没有任何权限进行登录!')
           }
           commit('SET_NAME', data.teacherName)
           commit('SET_AVATAR', data.teacherImg)

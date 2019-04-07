@@ -83,6 +83,13 @@ export const constantRouterMap = [
         name: 'type',
         component: () => import('@/views/components/bank/type/TypeList'),
         meta: { title: '题型管理', icon: 'table' }
+      },
+      {
+        path: 'question',
+        name: 'question',
+        component: () => import('@/views/components/bank/bank/QuestionList'),
+        meta: { title: '添加题目', icon: 'table' },
+        hidden: true
       }
     ]
   },
@@ -130,7 +137,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 

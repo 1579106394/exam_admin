@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 搜索框界面 -->
     <div class="table-header">
       <el-form :inline="true" :model="page" class="demo-form-inline" size="mini">
         <el-form-item label="题库名">
@@ -24,30 +25,48 @@
       <hr>
       <el-button type="primary" size="mini" @click="toAdd">添加</el-button>
     </div>
+    <!-- 搜索框结束 -->
 
+    <!-- 题库列表开始 -->
     <el-row>
-      <el-col :span="8" v-for="bank in page.list" :key="bank.bankId" :offset="1">
-        <el-card :body-style="{ padding: '0px' }" shadow="hover" class="bank-card">
+      <el-col :span="6" v-for="bank in page.list" :key="bank.bankId" :offset="1">
+        <el-card :body-style="{ padding: '0px' }" style="padding: 0px" shadow="hover" class="bank-card">
           <img :src="bank.bankImg" class="image">
-          <div style="padding: 14px;">
+          <div style="padding: 8px;">
             <p>题库名称: {{ bank.bankName }}</p>
             <p>学院: {{ bank.college.dictName }}</p>
             <p>科目: {{ bank.subject.dictName }}</p>
-            <div class="bottom clearfix">
-              <el-button type="success" size="mini" @click="toUpdate(bank.bankId)" style="margin-left:11%">编辑</el-button>
-              <el-button type="danger" size="mini" @click="toDelete(bank.bankId)">删除</el-button>
-            </div>
           </div>
+          <el-dropdown style="float: right;">
+            <span class="el-dropdown-link">
+              <el-button icon="el-icon-menu" plain size="mini"></el-button>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-button type="success" size="mini" @click="toUpdate(bank.bankId)">编辑</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button type="primary" size="mini" @click="toType(bank.bankId)">查看题型</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button type="danger" size="mini" @click="toDelete(bank.bankId)">删除</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-card>
       </el-col>
     </el-row>
+    <!-- 题库列表结束 -->
 
+    <!-- 分页组件开始 -->
     <div class="page-div banklist-page">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
         :current-page="page.currentPage" :page-sizes="[10,15,20,30]" :page-size="page.currentCount"
         layout="total, sizes, prev, pager, next, jumper" :total="page.totalCount"></el-pagination>
     </div>
+    <!-- 分页组件结束 -->
 
+    <!-- 新增修改弹窗 -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" v-loading="loading">
       <el-form :rules="rules" ref="bank" :model="bank" label-width="80px" size="mini">
         <el-form-item label="题库名称" prop="bankName">
@@ -78,12 +97,46 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 新增修改弹窗结束 -->
+
+    <!-- 查看题型弹窗 -->
+    <el-dialog title="查看题型" :visible.sync="dialogType" v-loading="loading">
+      <el-form :inline="true" :model="page" class="demo-form-inline" size="mini" label-width="80px">
+        <el-form-item label="题型">
+          <el-select v-model="bankType.bankType" filterable placeholder="请选择" clearable>
+            <el-option v-for="type in typeList" :key="type.typeId" :label="type.typeName" :value="type.typeId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="addBankType" size="mini">添加</el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-table :data="bankTypeList" style="width: 100%">
+        <el-table-column type="index" show-header="false"></el-table-column>
+        <el-table-column prop="type.typeName" show-header="false" align="center"></el-table-column>
+        <el-table-column show-header="false" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary">
+              <router-link to="question">
+                添加题目
+              </router-link>
+            </el-button>
+            <el-button size="mini" type="danger" @click="deleteBankType(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!-- 查看题型弹窗结束 -->
   </div>
 </template>
 
 <script>
   import dictApi from "@/api/dict";
   import bankApi from "@/api/bank";
+  import typeApi from "@/api/type";
+  import bankTypeApi from "@/api/bankType";
   import { Loading } from "element-ui";
 
   export default {
@@ -117,7 +170,11 @@
         subjectList: [],
         dialogTitle: "新增题库",
         imgLoading: false,
-        loading: false // 是否显示加载框
+        loading: false, // 是否显示加载框
+        dialogType: false, // 题型弹窗
+        typeList: [], // 题型列表
+        bankType: {}, // 用于分配题型
+        bankTypeList: [], // 显示题库的题型列表
       };
     },
     methods: {
@@ -248,12 +305,58 @@
         }
         this.imgLoading = true;
         return isJPG && isLt2M;
+      },
+      toType(bankId) {
+        // 展开分配题型弹出层
+        this.bankType.bankId = bankId
+        this.dialogType = true
+        this.btList()
+      },
+      getTypeList() {
+        // 加载题型列表
+        typeApi.all().then(res => {
+          this.typeList = res.data
+        })
+      },
+      addBankType() {
+        // 分配题型
+        bankTypeApi.save(this.bankType).then(res => {
+          if (res.code == 200) {
+            this.$message.success(res.msg)
+            this.btList()
+          }
+        })
+      },
+      deleteBankType(id) {
+        // 删除这个题库的某个题型
+        this.$confirm('确定从题库中移出此题型吗？, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          bankTypeApi.delete(id).then(res => {
+            if (res.code == 200) {
+              this.$message.success(res.msg)
+              this.btList()
+            }
+          })
+        })
+      },
+      btList() {
+        // 抽取出来的函数，加载某个题库的题型列表
+        this.loading = true
+        bankTypeApi.list(this.bankType.bankId).then(res => {
+          console.log(res.data);
+          this.bankTypeList = res.data
+          this.loading = false
+        })
       }
     },
     created() {
-      this.list();
-      this.getCollege();
-      this.getSubject();
+      this.list()
+      this.getCollege()
+      this.getSubject()
+      this.getTypeList()
     }
   };
 </script>
@@ -297,11 +400,6 @@
   .time {
     font-size: 13px;
     color: #999;
-  }
-
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
   }
 
   .button {
