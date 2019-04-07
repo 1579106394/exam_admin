@@ -70,7 +70,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/bank/bank',
     name: 'bank',
-    meta: { title: '系统管理', icon: 'example' },
+    meta: { title: '题库管理', icon: 'example' },
     children: [
       {
         path: 'bank',
@@ -121,12 +121,6 @@ export const constantRouterMap = [
         name: 'role',
         component: () => import('@/views/components/auth/role/RoleList'),
         meta: { title: '角色管理', icon: 'table' }
-      },
-      {
-        path: 'teacherRole',
-        name: 'teacherRole',
-        component: () => import('@/views/components/auth/role/TeacherRole'),
-        meta: { title: '教师角色', icon: 'table' }
       },
       {
         path: 'auth',

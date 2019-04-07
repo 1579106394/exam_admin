@@ -20,9 +20,22 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="toUpdate(scope.row.dictId)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="getMajor(scope.row.dictId)">查看专业</el-button>
-          <el-button size="mini" type="danger" @click="toDelete(scope.row.dictId)">删除</el-button>
+          <el-dropdown>
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-button size="mini" type="success" @click="toUpdate(scope.row.dictId)">编辑</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="primary" @click="getMajor(scope.row.dictId)">查看专业</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button size="mini" type="danger" @click="toDelete(scope.row.dictId)">删除</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -48,10 +61,10 @@
     </el-dialog>
 
     <el-dialog title="专业" :visible.sync="majorDialog">
-        <el-table :data="majorList">
-          <el-table-column property="dictName" label="专业名"></el-table-column>
-        </el-table>
-      </el-dialog>
+      <el-table :data="majorList">
+        <el-table-column property="dictName" label="专业名"></el-table-column>
+      </el-table>
+    </el-dialog>
 
   </div>
 </template>
