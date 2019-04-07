@@ -46,5 +46,10 @@ export default {
       data: type
     })
   },
-
+  all() {
+    return request({
+      url: `/${group_name}/all`,
+      method: 'get'
+    })
+  }
 }
