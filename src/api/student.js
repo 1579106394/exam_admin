@@ -1,25 +1,19 @@
 import request from '@/utils/request'
-var group_name = 'teacher'
+var group_name = 'student'
 export default {
-  login(teacher) {
-    return request({
-      url: `/${group_name}/login`,
-      method: 'post',
-      data: teacher
-    })
-  },
-  save(teacher) {
+
+  save(student) {
     return request({
       url: `/${group_name}/add`,
       method: 'post',
-      data: teacher
+      data: student
     })
   },
-  update(teacher) {
+  update(student) {
     return request({
       url: `/${group_name}/update`,
       method: 'put',
-      data: teacher
+      data: student
     })
   },
   list(page) {
@@ -29,15 +23,15 @@ export default {
       data: page
     })
   },
-  get(teacherId) {
+  get(stuId) {
     return request({
-      url: `/${group_name}/get/${teacherId}`,
+      url: `/${group_name}/get/${stuId}`,
       method: 'get'
     })
   },
-  delete(teacherId) {
+  delete(stuId) {
     return request({
-      url: `/${group_name}/delete/${teacherId}`,
+      url: `/${group_name}/delete/${stuId}`,
       method: 'delete'
     })
 

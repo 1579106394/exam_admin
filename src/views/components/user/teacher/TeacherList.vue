@@ -16,16 +16,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="入职时间" prop="teacherName">
-          <el-date-picker
-            placeholder="选择时间"
-            v-model="teacher.teacherEntryTime"
-            value-format="yyyy-MM-dd"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
         <el-form-item label="职务">
-          <el-select clearable v-model="page.params.teacherJob" filterable placeholder="请选择">
+          <el-select clearable v-model="page.params.jobId" filterable placeholder="请选择">
             <el-option
               v-for="job in jobList"
               :key="job.dictId"
@@ -35,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="职称">
-          <el-select clearable v-model="page.params.teacherTitle" filterable placeholder="请选择">
+          <el-select clearable v-model="page.params.titleId" filterable placeholder="请选择">
             <el-option
               v-for="title in titleList"
               :key="title.dictId"
@@ -44,8 +36,9 @@
             ></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="学院">
-          <el-select clearable v-model="page.params.teacherCollege" filterable placeholder="请选择">
+          <el-select clearable v-model="page.params.collegeId" filterable placeholder="请选择">
             <el-option
               v-for="college in collegeList"
               :key="college.dictId"
@@ -54,15 +47,29 @@
             ></el-option>
           </el-select>
         </el-form-item>
-
+        <el-form-item label="入职时间区间" prop>
+          <div class="block">
+            <el-date-picker
+              v-model="timeInterval"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            ></el-date-picker>
+          </div>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
       <!-- 搜索部分结束 -->
+
       <hr>
       <el-button type="primary" size="mini" @click="toAdd">添加</el-button>
     </div>
+
+    <!-- 列表开始 -->
     <el-table
       :data="page.list"
       border
@@ -85,7 +92,7 @@
       <el-table-column prop="teacherEntryTime" sortable="custom" label="入职时间"></el-table-column>
       <el-table-column prop="college.dictName" sortable="custom" label="学院"></el-table-column>
 
-      <el-table-column fixed="right" label="操作" width="248">
+      <el-table-column fixed="right" label="操作">
         <template class="teacher-do" slot-scope="scope">
           <el-dropdown>
             <el-button type="primary" size="mini">
@@ -110,7 +117,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 列表结束 -->
 
+    <!-- 分页组件开始 -->
     <div class="page-div">
       <el-pagination
         @size-change="handleSizeChange"
@@ -122,6 +131,9 @@
         :total="page.totalCount"
       ></el-pagination>
     </div>
+    <!-- 分页组件结束 -->
+
+    <!-- 新增 编辑弹窗开始 -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" v-loading="loading">
       <el-form
         :rules="rules"
@@ -217,13 +229,15 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item class="teacherlist-btn">
+        <el-form-item class="teacher-submit-part">
           <el-button type="primary" @click="save">提交</el-button>
           <el-button @click="dialogFormVisible=false">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 新增 编辑弹窗结束 -->
 
+    <!-- 详情弹窗开始 -->
     <el-dialog title="详细信息" :visible.sync="dialogResumeVisible" v-loading="loading">
       <el-form
         :rules="rules"
@@ -233,7 +247,7 @@
         label-width="80px"
         size="mini"
         label-position="right"
-        disabled="false"
+        :disabled="false"
       >
         <img :src="teacher.teacherImg" class="avatar" style="margin:-6% 39% 2%;">
         <el-form-item label="工号" prop="teacherNumber">
@@ -310,6 +324,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 详情弹窗结束 -->
 
     <!-- 下面是角色操作组件 -->
     <el-dialog title="修改角色" :visible.sync="dialogRoleTree">
@@ -340,6 +355,7 @@ import TeacherRoleApi from "@/api/teacherRole";
 export default {
   data() {
     return {
+      timeInterval: null, // 入职时间区间(数组)
       dialogFormVisible: false, // 弹出层表单隐藏
       dialogRoleTree: false, // 弹出层树形隐藏
       dialogResumeVisible: false, // 弹出简历页隐藏
@@ -381,35 +397,26 @@ export default {
         teacherEntryTime: "",
         teacherCollege: ""
       },
-      // rules: {
-      //   teacherNumber: [
-      //     { required: true, message: "请输入工号", trigger: "blur" },
-      //     { type: number, message: "工号必须为数字" }
-      //   ],
-      //   teacherPassword: [
-      //     { required: true, message: "请输入密码", trigger: "blur" }
-      //   ],
-      //   teacherName: [
-      //     { required: true, message: "请输入姓名", trigger: "blur" }
-      //   ],
-      //   teacherSex: [
-      //     { required: true, message: "请选择性别", trigger: "blur" }
-      //   ],
-      //   teacherAge: [
-      //     { required: true, message: "", trigger: "blur" },
-      //     { type: number, message: "年龄必须为数字值" }
-      //   ],
-      //   teacherMobile: [
-      //     { required: true, message: "请输入手机号码", trigger: "blur" },
-      //     { type: number, message: "手机号必须为数字" }
-      //   ],
-      //   teacherImg: [
-      //     { required: true, message: "请输入题库名", trigger: "blur" }
-      //   ],
-      //   teacherEmail: [
-      //     { required: true, message: "请输入邮箱地址", trigger: "blur" }
-      //   ]
-      // },
+      rules: {
+        teacherNumber: [
+          { required: true, message: "请输入工号", trigger: "blur" },
+        ],
+        teacherPassword: [
+          { required: true, message: "请输入密码", trigger: "blur" }
+        ],
+        teacherName: [
+          { required: true, message: "请输入姓名", trigger: "blur" }
+        ],
+        teacherSex: [
+          { required: true, message: "请选择性别", trigger: "blur" }
+        ],
+        teacherAge: [
+          { required: true, message: "年龄不能为空", trigger: "blur" },
+        ],
+        teacherImg: [
+          { required: true, message: "请输入题库名", trigger: "blur" }
+        ]
+      },
       collegeList: [],
       jobList: [],
       titleList: [],
@@ -450,10 +457,11 @@ export default {
 
     save() {
       // 保存或修改;
-      this.$refs.teacher.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          if (this.teacher.teacherId != "") {
+
+      if (this.teacher.teacherId != "") {
+        this.$refs.teacher.validate(valid => {
+          if (valid) {
+            this.loading = true;
             teacherApi.update(this.teacher).then(res => {
               if (res.code == 200) {
                 this.dialogFormVisible = false;
@@ -463,6 +471,14 @@ export default {
               }
             });
           } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      } else {
+        this.$refs.teacher.validate(valid => {
+          if (valid) {
+            this.loading = true;
             teacherApi.save(this.teacher).then(res => {
               if (res.code == 200) {
                 this.dialogFormVisible = false;
@@ -476,16 +492,23 @@ export default {
                 this.loading = false;
               }
             });
+          } else {
+            console.log("error submit!!");
+            return false;
           }
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+        });
+      }
     },
     list() {
       // 分页查询
       this.loading = true;
+      if (this.timeInterval != null) {
+        this.page.params.startTime = this.timeInterval[0];
+        this.page.params.endTime = this.timeInterval[1];
+      } else {
+        this.page.params.startTime = "";
+        this.page.params.endTime = "";
+      }
       teacherApi.list(this.page).then(res => {
         if (res.code == 200) {
           this.page = res.data;
@@ -696,7 +719,7 @@ export default {
   display: block;
 }
 
-.teacherlist-btn {
+.teacher-submit-part {
   padding: 13% 0 0 10%;
 }
 
