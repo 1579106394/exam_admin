@@ -118,10 +118,8 @@
         <el-table-column prop="type.typeName" show-header="false" align="center"></el-table-column>
         <el-table-column show-header="false" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary">
-              <router-link to="question">
-                添加题目
-              </router-link>
+            <el-button size="mini" type="primary" @click="toQuestion(scope.row.bankId, scope.row.bankType)">
+              添加题目
             </el-button>
             <el-button size="mini" type="danger" @click="deleteBankType(scope.row.id)">删除</el-button>
           </template>
@@ -350,6 +348,18 @@
           this.bankTypeList = res.data
           this.loading = false
         })
+      },
+      toQuestion(bankId, typeId) {
+        // 跳转到添加题目页面
+        if (typeId == 1 || typeId == 2 || typeId == 3) {
+          this.$router.push({
+            name: 'choice',
+            params: {
+              bankId: bankId,
+              typeId: typeId
+            }
+          })
+        }
       }
     },
     created() {
