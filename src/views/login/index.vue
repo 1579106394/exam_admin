@@ -114,6 +114,7 @@
     height: 100%;
     width: 100%;
     background-image: url("/src/img/login_bg.png");
+    background-size:100% 100%;
 
     .login-form {
       position: absolute;
