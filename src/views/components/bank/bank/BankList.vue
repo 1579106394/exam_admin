@@ -119,7 +119,7 @@
         <el-table-column show-header="false" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="toQuestion(scope.row.bankId, scope.row.bankType)">
-              添加题目
+              查看题目
             </el-button>
             <el-button size="mini" type="danger" @click="deleteBankType(scope.row.id)">删除</el-button>
           </template>
@@ -354,7 +354,7 @@
         if (typeId == 1 || typeId == 2 || typeId == 3) {
           this.$router.push({
             name: 'choice',
-            params: {
+            query: {
               bankId: bankId,
               typeId: typeId
             }

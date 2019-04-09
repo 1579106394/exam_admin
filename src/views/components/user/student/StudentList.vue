@@ -444,6 +444,7 @@ export default {
     toUpdate(id) {
       // 打开弹窗，进行修改
       // 根据id查询
+      this.majorList0 = this.majorList
       stuApi.get(id).then(res => {
         if (res.code == 200) {
           this.student = res.data;

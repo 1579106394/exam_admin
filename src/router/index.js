@@ -88,7 +88,7 @@ export const constantRouterMap = [
         path: 'choice',
         name: 'choice',
         component: () => import('@/views/components/bank/bank/ChoiceList'),
-        meta: { title: '添加题目', icon: 'table' },
+        meta: { title: '查看题目', icon: 'table' },
         hidden: true
       }
     ]

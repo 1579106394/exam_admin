@@ -31,8 +31,6 @@ const user = {
         login(teacher).then(response => {
           const data = response.data
           setToken(data.token)
-          console.log(data)
-          console.log(getToken())
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
