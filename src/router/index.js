@@ -85,10 +85,31 @@ export const constantRouterMap = [
         meta: { title: '题型管理', icon: 'table' }
       },
       {
+        path: 'knowledge/:bankId',
+        name: 'knowledge',
+        component: () => import('@/views/components/bank/bank/KnowledgeList'),
+        meta: { title: '知识点', icon: 'table' },
+        hidden: true
+      },
+      {
         path: 'choice',
         name: 'choice',
         component: () => import('@/views/components/bank/bank/ChoiceList'),
-        meta: { title: '查看题目', icon: 'table' },
+        meta: { title: '选择题', icon: 'table' },
+        hidden: true
+      },
+      {
+        path: 'truefalse',
+        name: 'truefalse',
+        component: () => import('@/views/components/bank/bank/TrueFalseList'),
+        meta: { title: '判断题', icon: 'table' },
+        hidden: true
+      },
+      {
+        path: 'completion',
+        name: 'completion',
+        component: () => import('@/views/components/bank/bank/CompletionList'),
+        meta: { title: '填空题', icon: 'table' },
         hidden: true
       }
     ]

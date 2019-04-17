@@ -25,9 +25,8 @@
     <el-row v-for="question in page.list" :key="question.choiceId" v-loading="loading">
       <el-card class="card-box">
         <div slot="header" class="clearfix">
-          <div style="float: left; padding-top: 10px">{{ question.choiceTitle + '. (' + question.choiceScore + '分)' }}
-          </div>
-          <el-dropdown style="float: right;">
+          <pre style="float: left; padding-top: 10px; line-height: 10px">{{ question.choiceTitle + '. (' + question.choiceScore + '分)' }}</pre>
+          <el-dropdown style="float: right; margin-top: 8px">
             <el-button type="primary" size="mini">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
@@ -117,6 +116,7 @@
           choiceTitle: '', // 题干
           choiceType: this.$route.query.typeId, // 题型
           choiceBank: this.$route.query.bankId, // 所属题库
+          choiceKnow: this.$route.query.knowId, // 所属知识点
           choiceScore: 0, // 分值
           choiceDifficulty: 1, // 难度系数
           choiceResolve: "", // 解析
@@ -141,6 +141,7 @@
           params: {
             typeId: this.$route.query.typeId,
             bankId: this.$route.query.bankId,
+            knowId: this.$route.query.knowId,
           },
           list: []
         }
@@ -149,14 +150,19 @@
     methods: {
       toAdd() {
         // 打开添加弹窗
+        // 清空题目
+        this.choice.choiceId = ''
+        this.dialogTitle = '添加题目'
         this.dialogFormVisible = true
       },
       save() {
         // 保存题目
+        this.loading = true
         choiceApi.save(this.choice).then(res => {
           if (res.code == 200) {
             this.$message.success(res.msg)
           }
+          this.loading = false
           this.dialogFormVisible = false
           this.list()
         })
@@ -222,6 +228,7 @@
           this.choice = res.data
           this.dialogTitle = '修改题目'
           this.dialogFormVisible = true
+          this.answerKey = res.data.choiceAnswer.length - 1
         })
       }
     },
@@ -248,4 +255,9 @@
     margin-top: 13px;
     line-height: 12px;
   }
+
+  .page-div {
+    margin-top: 15px;
+  }
+
 </style>

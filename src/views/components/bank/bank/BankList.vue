@@ -46,7 +46,7 @@
                 <el-button type="success" size="mini" @click="toUpdate(bank.bankId)">编辑</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-button type="primary" size="mini" @click="toType(bank.bankId)">查看题型</el-button>
+                <el-button type="primary" size="mini" @click="toKnowledge(bank.bankId)">知识点</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-button type="danger" size="mini" @click="toDelete(bank.bankId)">删除</el-button>
@@ -98,35 +98,6 @@
       </el-form>
     </el-dialog>
     <!-- 新增修改弹窗结束 -->
-
-    <!-- 查看题型弹窗 -->
-    <el-dialog title="查看题型" :visible.sync="dialogType" v-loading="loading">
-      <el-form :inline="true" :model="page" class="demo-form-inline" size="mini" label-width="80px">
-        <el-form-item label="题型">
-          <el-select v-model="bankType.bankType" filterable placeholder="请选择" clearable>
-            <el-option v-for="type in typeList" :key="type.typeId" :label="type.typeName" :value="type.typeId">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="addBankType" size="mini">添加</el-button>
-        </el-form-item>
-      </el-form>
-
-      <el-table :data="bankTypeList" style="width: 100%">
-        <el-table-column type="index" show-header="false"></el-table-column>
-        <el-table-column prop="type.typeName" show-header="false" align="center"></el-table-column>
-        <el-table-column show-header="false" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="toQuestion(scope.row.bankId, scope.row.bankType)">
-              查看题目
-            </el-button>
-            <el-button size="mini" type="danger" @click="deleteBankType(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-    <!-- 查看题型弹窗结束 -->
   </div>
 </template>
 
@@ -169,10 +140,6 @@
         dialogTitle: "新增题库",
         imgLoading: false,
         loading: false, // 是否显示加载框
-        dialogType: false, // 题型弹窗
-        typeList: [], // 题型列表
-        bankType: {}, // 用于分配题型
-        bankTypeList: [], // 显示题库的题型列表
       };
     },
     methods: {
@@ -304,69 +271,20 @@
         this.imgLoading = true;
         return isJPG && isLt2M;
       },
-      toType(bankId) {
-        // 展开分配题型弹出层
-        this.bankType.bankId = bankId
-        this.dialogType = true
-        this.btList()
-      },
-      getTypeList() {
-        // 加载题型列表
-        typeApi.all().then(res => {
-          this.typeList = res.data
-        })
-      },
-      addBankType() {
-        // 分配题型
-        bankTypeApi.save(this.bankType).then(res => {
-          if (res.code == 200) {
-            this.$message.success(res.msg)
-            this.btList()
+      toKnowledge(bankId) {
+        // 查看知识点
+        this.$router.push({
+          name: 'knowledge',
+          params: {
+            bankId: bankId
           }
         })
-      },
-      deleteBankType(id) {
-        // 删除这个题库的某个题型
-        this.$confirm('确定从题库中移出此题型吗？, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(() => {
-          bankTypeApi.delete(id).then(res => {
-            if (res.code == 200) {
-              this.$message.success(res.msg)
-              this.btList()
-            }
-          })
-        })
-      },
-      btList() {
-        // 抽取出来的函数，加载某个题库的题型列表
-        this.loading = true
-        bankTypeApi.list(this.bankType.bankId).then(res => {
-          console.log(res.data);
-          this.bankTypeList = res.data
-          this.loading = false
-        })
-      },
-      toQuestion(bankId, typeId) {
-        // 跳转到添加题目页面
-        if (typeId == 1 || typeId == 2 || typeId == 3) {
-          this.$router.push({
-            name: 'choice',
-            query: {
-              bankId: bankId,
-              typeId: typeId
-            }
-          })
-        }
       }
     },
     created() {
       this.list()
       this.getCollege()
       this.getSubject()
-      this.getTypeList()
     }
   };
 </script>
